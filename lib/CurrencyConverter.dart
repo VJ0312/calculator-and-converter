@@ -17,6 +17,7 @@ class _CurrConvert extends State<CurrConvert> {
   String inputCurrency = "USD", outputCurrency = "CAD", result;
   TextEditingController inputTextController = TextEditingController();
   TextEditingController outputTextController = TextEditingController();
+  TextEditingController unitTextController = TextEditingController();
   List<String> currencies;
 
 
@@ -47,6 +48,18 @@ class _CurrConvert extends State<CurrConvert> {
     return ""; // take input currency and output currency
   }
 
+  Future<String> _unitRate() async {
+    String uri = "https://api.exchangeratesapi.io/latest?base=$inputCurrency&symbols=$outputCurrency";
+    var response = await http
+        .get(Uri.encodeFull(uri), headers: {"Accept": "application/json"});
+    var responseBody = json.decode(response.body);
+    setState(() {
+      result = (double.parse("1") * (responseBody["rates"][outputCurrency])).toString();
+      unitTextController.text = result != null ? "1 $inputCurrency = $result $outputCurrency" : "";
+    });
+    return ""; // display unit rate for input currency
+  }
+
   _inputCurrency(String value) {
     setState(() {
       inputCurrency = value;
@@ -70,15 +83,88 @@ class _CurrConvert extends State<CurrConvert> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Card(
-                  child: Column(
-                    children: <Widget>[
-                      listFields(40, inputTextController, "Enter a value", inputCurrency), // call ListFields and give parameters
-                      convertArrow(),
-                      listFields(50, outputTextController, "", outputCurrency), // call ListFields and give parameters
-                    ],
+                  child: Padding(
+                  padding: EdgeInsets.fromLTRB(0,20, 0, 0),
+                      child: Container(
+                        child: Column(
+                          children: <Widget>[
+                            textBox(inputTextController),
+                            Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(60, 0, 0, 0),
+                                  child: dropButton(inputCurrency),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(50,0,0,0),
+                                  child: Text("TO", style: TextStyle(
+                                    fontSize: 40,
+                                  )),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.fromLTRB(50,0,0,0),
+                                  child: dropButton(outputCurrency),
+                                )
+                              ],
+                            ),
+                            Padding(
+                                padding: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                                child: TextField(
+                                  controller: unitTextController,
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                  ),
+                                )
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
+                                child: IconButton(
+                                    icon: Icon(
+                                      Icons.arrow_downward,
+                                      size: 60,
+                                    ),
+                                    onPressed: () {
+                                      _convert();
+                                      _unitRate();
+                                    }
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                              child: textBox(outputTextController),
+                            ),
+                          // outputTextBox(),
+                          ],
+                        ),
+                      )
                   ),
                 ),
               )),
+    );
+  }
+
+
+
+  Widget textBox(var control) { // Create custom widget with parameters
+    return Container(
+      margin: EdgeInsets.all(20),
+      child: TextField(
+        style: TextStyle(
+          fontSize: 30
+        ),
+        maxLines: 1,
+        textAlign: TextAlign.center,
+        controller: control,
+        keyboardType:
+        TextInputType.numberWithOptions(decimal: true),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+        ),
+      ),
     );
   }
 
@@ -154,35 +240,6 @@ class _CurrConvert extends State<CurrConvert> {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget listFields(double pad, var control, String text, var curr) {  // Create custom widget with parameters
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, pad, 0, 0),
-      child: ListTile(
-        title: TextField(
-          controller: control,
-          keyboardType:
-          TextInputType.numberWithOptions(decimal: true),
-          decoration:
-          InputDecoration(hintText: text),
-        ),
-        trailing: dropButton(curr),
-      ),
-    );
-  }
-
-  Widget convertArrow() {  // Create custom widget with parameters
-    return Padding(
-      padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
-      child: IconButton(
-        icon: Icon(
-          Icons.arrow_downward,
-          size: 60,
-        ),
-        onPressed: _convert,
       ),
     );
   }
