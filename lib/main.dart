@@ -1,4 +1,3 @@
-import 'package:calculator/CurrencyConverter.dart';
 import 'package:flutter/material.dart';
 import 'SimpleCalculator.dart';
 

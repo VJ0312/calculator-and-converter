@@ -1,9 +1,10 @@
 import 'package:calculator/SimpleCalculator.dart';
-import 'package:calculator/VolumeConverter.dart';
-import 'package:calculator/WeightConverter.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:calculator/VolumeConverter.dart';
 import 'package:calculator/CurrencyConverter.dart';
+import 'WeightConverter.dart';
+import 'package:flutter/material.dart';
+import 'TemperatureConverter.dart';
 
 class DistanceConvert extends StatefulWidget {
   _DistanceConvert createState() => _DistanceConvert();
@@ -33,65 +34,7 @@ class _DistanceConvert extends State<DistanceConvert> { // Initialize Variables
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: Text("Distance Converter")),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: ListTile(
-                  title:
-                      Text('Calculator', style: TextStyle(fontSize: 30)),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SimpleCalculator(), // when "Calculator" is pressed, switch screen to Calculator screen
-                        ));
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: ListTile(
-                  title: Text('Currency Conversion',
-                      style: TextStyle(fontSize: 30)),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CurrConvert())); // when "Currency Conversion" is pressed, switch screen to Currency conversion screen
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: ListTile(
-                  title:
-                      Text('Weight Conversion', style: TextStyle(fontSize: 30)), // when "Weight Conversion" is pressed, switch screen to Weight conversion screen
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => WeightConvert()));
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: ListTile(
-                  title:
-                      Text('Volume Conversion', style: TextStyle(fontSize: 30)),
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => VolumeConvert()));
-                    // when "Volume Conversion" is pressed, switch screen to volume conversion screen
-                  },
-                ),
-              )
-            ],
-          ),
-        ),
+        drawer: drawerWidget(),
         body: Container(
           height: MediaQuery.of(context).size.height / 1.1,
           width: MediaQuery.of(context).size.width,
@@ -149,6 +92,103 @@ class _DistanceConvert extends State<DistanceConvert> { // Initialize Variables
         );
   }
 
+  Widget drawerWidget() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero, // styling value
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title: Text('Converter',
+                  style: TextStyle(fontSize: 30)),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title: Text('Calculator',
+                  style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Calculator";
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SimpleCalculator(),
+                    ));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title: Text('Distance Conversion',
+                  style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Distance Conversion";
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DistanceConvert(),
+                    ));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title: Text('Currency Conversion',
+                  style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Currency Conversion";
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CurrConvert(),
+                    ));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Weight Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Weight Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => WeightConvert()));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Volume Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Volume Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => VolumeConvert()));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Temperature Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Temperature Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TemperatureConvert()));
+              },
+            ),
+          )
+        ],
+      ),
+    );
+  }
   Widget DistancedropdownBut(String disValue) { // create custom widget
     return DropdownButton(
       value: disValue,

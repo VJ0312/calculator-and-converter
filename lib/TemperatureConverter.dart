@@ -1,43 +1,43 @@
+import 'package:calculator/WeightConverter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:calculator/SimpleCalculator.dart';
+import 'package:calculator/CurrencyConverter.dart';
+import 'SimpleCalculator.dart';
 import 'DistanceConverter.dart';
-import 'CurrencyConverter.dart';
 import 'package:calculator/VolumeConverter.dart';
-import 'TemperatureConverter.dart';
 
-TextEditingController textC = TextEditingController();
-
-class WeightConvert extends StatefulWidget {
-  _WeightConvert createState() => _WeightConvert();
+class TemperatureConvert extends StatefulWidget {
+  _TemperatureConvert createState() => _TemperatureConvert();
 }
 
-// same as Distance Convert and volume Convert
+// same as Distance Convert and Weight Convert
 
-class _WeightConvert extends State<WeightConvert> {
-  var weightDropDownValue = "Ounces", weightDropDown = "Pounds", inputValue;
-  TextEditingController textC2 = TextEditingController();
+class _TemperatureConvert extends State<TemperatureConvert> {
+
+  var tempDropDownValue = "Celsius", tempDropDown = "Fahrenheit", inputValue;
+  final textC = TextEditingController();
+  final textC2 = TextEditingController();
   var convertedResult;
 
   _onFromChanged(String value) {
     setState(() {
-      weightDropDownValue = value;
-      print("weightDropDownValue $weightDropDownValue");
+      tempDropDownValue = value;
+      print("tempDropDownValue $tempDropDownValue");
     });
   }
 
   _onToChanged(String value) {
     setState(() {
-      weightDropDown = value;
-      print("weightDropDown $weightDropDown");
+      tempDropDown = value;
+      print("tempDropDown $tempDropDown");
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Weight Converter")),
-        drawer: drawerWidget(),
+        appBar: AppBar(title: Text("Temperature Converter")),
+        drawer:  drawerWidget(),
         body: Container(
           height: MediaQuery.of(context).size.height / 1.1,
           width: MediaQuery.of(context).size.width,
@@ -52,13 +52,14 @@ class _WeightConvert extends State<WeightConvert> {
                       child: ListTile(
                           title: TextField(
                             controller: textC,
-                            keyboardType:
-                                TextInputType.numberWithOptions(decimal: true),
+                            keyboardType: TextInputType.numberWithOptions(
+                                decimal: true),
                             decoration: InputDecoration(
                                 hintText:
-                                    "Enter a value in $weightDropDownValue"),
+                                "Enter a value in $tempDropDownValue"),
                           ),
-                          trailing: weightDropDownBut(weightDropDownValue)),
+                          trailing:
+                          tempDropDownBut(tempDropDownValue)),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
@@ -73,8 +74,8 @@ class _WeightConvert extends State<WeightConvert> {
                               inputValue = textC.text;
                               textC2.text = MetricConversionTools().convert(
                                   inputValue,
-                                  weightDropDownValue,
-                                  weightDropDown);
+                                  tempDropDownValue,
+                                  tempDropDown);
                             });
                           }),
                     ),
@@ -85,15 +86,16 @@ class _WeightConvert extends State<WeightConvert> {
                             readOnly: true,
                             controller: textC2,
                             decoration: InputDecoration(
-                                hintText: "conversion in $weightDropDown"),
+                                hintText: "conversion in $tempDropDown"),
                           ),
-                          trailing: weightDropDownBut(weightDropDown)),
+                          trailing: tempDropDownBut(tempDropDown)),
                     )
                   ],
                 ),
-              )),
+              )
+          ),
         ) //: null,
-        );
+    );
   }
   Widget drawerWidget() {
     return Drawer(
@@ -187,12 +189,13 @@ class _WeightConvert extends State<WeightConvert> {
                     MaterialPageRoute(builder: (context) => TemperatureConvert()));
               },
             ),
-          )
+          ),
         ],
       ),
     );
   }
-  Widget weightDropDownBut(String disValue) {
+
+  Widget tempDropDownBut(String disValue) {
     return DropdownButton(
       value: disValue,
       icon: Icon(Icons.arrow_downward),
@@ -204,18 +207,15 @@ class _WeightConvert extends State<WeightConvert> {
         color: Colors.white,
       ),
       items: <String>[
-        'Milligrams',
-        'Grams',
-        'Kilograms',
-        'Ounces',
-        'Pounds',
-        'Stone',
+        'Celsius',
+        'Fahrenheit',
+        'Kelvins',
       ].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(value: value, child: Text(value));
       }).toList(),
       onChanged: (String newValue) {
         setState(() {
-          if (disValue == weightDropDownValue) {
+          if (disValue == tempDropDownValue) {
             print("top");
             _onFromChanged(newValue);
           } else {
@@ -232,88 +232,32 @@ class MetricConversionTools {
   String convert(var input, var top, var bottom) {
     var answer = int.parse(input);
     double ans;
-    if (top == "Milligrams") {
-      if (bottom == "Grams") {
-        ans = answer / 1000.0;
-      } else if (bottom == "Kilograms") {
-        ans = answer / 1000000.0;
-      } else if (bottom == "Ounces") {
-        ans = answer / 28350.0;
-      } else if (bottom == "Pounds") {
-        ans = answer / 453592.0;
-      } else if (bottom == "Stone") {
-        ans = answer / 5669904.625;
-      } else {
+    if (top == "Celsius") {
+      if (bottom == "Fahrenheit") {
+        ans = (answer * 1.8) + 32.0;
+      } else if (bottom == "Kelvins") {
+        ans = answer + 273.15;
+      }
+       else {
         ans = answer.toDouble();
       }
-    } else if (top == "Grams") {
-      if (bottom == "Milligrams") {
-        ans = answer * 1000.0;
-      } else if (bottom == "Kilograms") {
-        ans = answer / 1000.0;
-      } else if (bottom == "Ounces") {
-        ans = answer / 28.35;
-      } else if (bottom == "Pounds") {
-        ans = answer / 454;
-      } else if (bottom == "Stone") {
-        ans = answer / 6350.0;
-      } else {
+    } else if (top == "Fahrenheit") {
+      if (bottom == "Celsius") {
+        ans = (answer - 32.0) / 1.80;
+      } else if (bottom == "Kelvins") {
+        ans = (answer + 459.67) * 5 / 9;
+      }
+      else {
         ans = answer.toDouble();
       }
-    } else if (top == "Kilograms") {
-      if (bottom == "Milligrams") {
-        ans = answer * 1000000.0;
-      } else if (bottom == "Grams") {
-        ans = answer / 1000.0;
-      } else if (bottom == "Ounces") {
-        ans = answer * 35.274;
-      } else if (bottom == "Pounds") {
-        ans = answer * 2.20462;
-      } else if (bottom == "Stone") {
-        ans = answer / 6.35;
-      } else {
-        ans = answer.toDouble();
+    }
+    else {
+      if (bottom == "Celsius") {
+        ans = answer - 273.15;
+      } else if (bottom == "Fahrenheit") {
+        ans = 1.8 * (answer - 273) + 32;
       }
-    } else if (top == "Ounces") {
-      if (bottom == "Milligrams") {
-        ans = answer * 28349.5;
-      } else if (bottom == "Grams") {
-        ans = answer * 28.35;
-      } else if (bottom == "Kilograms") {
-        ans = answer / 35.274;
-      } else if (bottom == "Pounds") {
-        ans = answer / 16.0;
-      } else if (bottom == "Stone") {
-        ans = answer / 224.0;
-      } else {
-        ans = answer.toDouble();
-      }
-    } else if (top == "Pounds") {
-      if (bottom == "Milligrams") {
-        ans = answer * 453592.0;
-      } else if (bottom == "Grams") {
-        ans = answer * 454.0;
-      } else if (bottom == "Ounces") {
-        ans = answer / 16.0;
-      } else if (bottom == "Kilograms") {
-        ans = answer / 2.205;
-      } else if (bottom == "Stone") {
-        ans = answer / 14.0;
-      } else {
-        ans = answer.toDouble();
-      }
-    } else if (top == "Stone") {
-      if (bottom == "Milligrams") {
-        ans = answer * 6350293.2;
-      } else if (bottom == "Grams") {
-        ans = answer * 6350.0;
-      } else if (bottom == "Ounces") {
-        ans = answer * 224.0;
-      } else if (bottom == "Pounds") {
-        ans = answer * 14.0;
-      } else if (bottom == "Kilograms") {
-        ans = answer * 6.35;
-      } else {
+     else {
         ans = answer.toDouble();
       }
     }
