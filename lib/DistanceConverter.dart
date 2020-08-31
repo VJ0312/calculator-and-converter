@@ -1,10 +1,11 @@
-import 'package:calculator/SimpleCalculator.dart';
+import 'package:calculator/Calculator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:calculator/VolumeConverter.dart';
 import 'package:calculator/CurrencyConverter.dart';
 import 'WeightConverter.dart';
 import 'package:flutter/material.dart';
 import 'TemperatureConverter.dart';
+import 'PressureConverter.dart';
 
 class DistanceConvert extends StatefulWidget {
   _DistanceConvert createState() => _DistanceConvert();
@@ -182,6 +183,18 @@ class _DistanceConvert extends State<DistanceConvert> { // Initialize Variables
                 page = "Temperature Conversion";
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TemperatureConvert()));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Pressure Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Pressure Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => pressureConvert()));
               },
             ),
           )

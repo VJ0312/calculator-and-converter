@@ -5,7 +5,10 @@ import 'CurrencyConverter.dart';
 import 'DistanceConverter.dart';
 import 'WeightConverter.dart';
 import 'VolumeConverter.dart';
+import 'PressureConverter.dart';
+
 String page;
+bool switchToScientific = false;
 
 class SimpleCalculator extends StatefulWidget {
   @override
@@ -50,14 +53,14 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Calculator"), // Title at top
+              title: Text("Calculator"),
         ),
         drawer: drawerWidget(),
         body: Column(
           children: <Widget>[
             Container(
               alignment: Alignment.centerRight,
-              padding: EdgeInsets.fromLTRB(10, 10, 45, 0),
+              padding: EdgeInsets.fromLTRB(0, 10, 45, 0),
               child: Text(
                 eqn, // Display expression at top
                 style: TextStyle(fontSize: 40),
@@ -65,16 +68,15 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
             ),
             Container(
               alignment: Alignment.centerRight,
-              padding: EdgeInsets.fromLTRB(10, 20, 45, 0),
+              padding: EdgeInsets.fromLTRB(0, 30, 40, 0),
               child: Text(
-                result, // Display evaluated expression below
-                style: TextStyle(fontSize: 60),
+                result, // Display expression at top
+                style: TextStyle(fontSize: 70),
               ),
             ),
             Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: 10),
                   child: Row(
                     children: <Widget>[
                       Padding(
@@ -152,6 +154,14 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                       ),
                     ],
                   ),
+                  padding: EdgeInsets.only(top: 0),
+                ),
+                Row(
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left: 22),
+                    ),
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 0),
@@ -230,7 +240,7 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 0),
+                  padding: EdgeInsets.only(top: 10),
                   child: Row(
                     children: <Widget>[
                       Padding(
@@ -251,7 +261,6 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                       MaterialButton(
                         color: Colors.orangeAccent,
                         textColor: Colors.white,
-                        padding: EdgeInsets.all(20),
                         height: 70.0,
                         minWidth: 70.0,
                         shape: CircleBorder(),
@@ -268,7 +277,7 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: 0),
+                  padding: EdgeInsets.only(top: 20),
                   child: Row(
                     children: <Widget>[
                       Padding(
@@ -300,7 +309,7 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                       MaterialButton(
                         color: Colors.blue,
                         textColor: Colors.white,
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         splashColor: Colors.blueAccent,
                         height: 70.0,
                         minWidth: 70.0,
@@ -319,7 +328,7 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                       MaterialButton(
                         color: Colors.orangeAccent,
                         textColor: Colors.white,
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(10),
                         shape: CircleBorder(),
                         splashColor: Colors.orangeAccent,
                         onPressed: () {
@@ -340,6 +349,8 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
           ],
         ));
   }
+
+
   Widget numberButton(int number) { // Create custom Widget with parameters
    return MaterialButton(
      color: Colors.blue,
@@ -357,6 +368,8 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
      ),
    );
   }
+
+
   Widget drawerWidget() {
     return Drawer(
       child: ListView(
@@ -447,6 +460,18 @@ class SimpleCalculatorState extends State<SimpleCalculator> {
                 page = "Temperature Conversion";
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TemperatureConvert()));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Pressure Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Pressure Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => pressureConvert()));
               },
             ),
           )

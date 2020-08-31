@@ -4,40 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:calculator/CurrencyConverter.dart';
 import 'Calculator.dart';
 import 'DistanceConverter.dart';
-import 'PressureConverter.dart';
 import 'package:calculator/VolumeConverter.dart';
+import 'TemperatureConverter.dart';
 
-class TemperatureConvert extends StatefulWidget {
-  _TemperatureConvert createState() => _TemperatureConvert();
+class pressureConvert extends StatefulWidget {
+  _pressureConvert createState() => _pressureConvert();
 }
 
 // same as Distance Convert and Weight Convert
 
-class _TemperatureConvert extends State<TemperatureConvert> {
-
-  var tempDropDownValue = "Celsius", tempDropDown = "Fahrenheit", inputValue;
+class _pressureConvert extends State<pressureConvert> {
+  var pressureDropDown = "PSI", pressureDropDownValue = "Pascal", inputValue;
   final textC = TextEditingController();
   final textC2 = TextEditingController();
   var convertedResult;
 
   _onFromChanged(String value) {
     setState(() {
-      tempDropDownValue = value;
-      print("tempDropDownValue $tempDropDownValue");
+      pressureDropDownValue = value;
+      print("pressureDropDownValue $pressureDropDownValue");
     });
   }
 
   _onToChanged(String value) {
     setState(() {
-      tempDropDown = value;
-      print("tempDropDown $tempDropDown");
+      pressureDropDown = value;
+      print("pressureDropDown $pressureDropDown");
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Temperature Converter")),
+        appBar: AppBar(title: Text("Pressure Converter")),
         drawer:  drawerWidget(),
         body: Container(
           height: MediaQuery.of(context).size.height / 1.1,
@@ -57,10 +56,10 @@ class _TemperatureConvert extends State<TemperatureConvert> {
                                 decimal: true),
                             decoration: InputDecoration(
                                 hintText:
-                                "Enter a value in $tempDropDownValue"),
+                                "Enter a value in $pressureDropDownValue"),
                           ),
                           trailing:
-                          tempDropDownBut(tempDropDownValue)),
+                          pressureDropDownBut(pressureDropDownValue)),
                     ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0, 80, 0, 0),
@@ -75,8 +74,8 @@ class _TemperatureConvert extends State<TemperatureConvert> {
                               inputValue = textC.text;
                               textC2.text = MetricConversionTools().convert(
                                   inputValue,
-                                  tempDropDownValue,
-                                  tempDropDown);
+                                  pressureDropDownValue,
+                                  pressureDropDown);
                             });
                           }),
                     ),
@@ -87,9 +86,9 @@ class _TemperatureConvert extends State<TemperatureConvert> {
                             readOnly: true,
                             controller: textC2,
                             decoration: InputDecoration(
-                                hintText: "conversion in $tempDropDown"),
+                                hintText: "conversion in $pressureDropDown"),
                           ),
-                          trailing: tempDropDownBut(tempDropDown)),
+                          trailing: pressureDropDownBut(pressureDropDown)),
                     )
                   ],
                 ),
@@ -208,7 +207,7 @@ class _TemperatureConvert extends State<TemperatureConvert> {
     );
   }
 
-  Widget tempDropDownBut(String disValue) {
+  Widget pressureDropDownBut(String disValue) {
     return DropdownButton(
       value: disValue,
       icon: Icon(Icons.arrow_downward),
@@ -220,15 +219,15 @@ class _TemperatureConvert extends State<TemperatureConvert> {
         color: Colors.white,
       ),
       items: <String>[
-        'Celsius',
-        'Fahrenheit',
-        'Kelvins',
+        'Pascal',
+        'PSI',
+        'Bar',
       ].map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(value: value, child: Text(value));
       }).toList(),
       onChanged: (String newValue) {
         setState(() {
-          if (disValue == tempDropDownValue) {
+          if (disValue == pressureDropDownValue) {
             print("top");
             _onFromChanged(newValue);
           } else {
@@ -245,32 +244,32 @@ class MetricConversionTools {
   String convert(var input, var top, var bottom) {
     var answer = int.parse(input);
     double ans;
-    if (top == "Celsius") {
-      if (bottom == "Fahrenheit") {
-        ans = (answer * 1.8) + 32.0;
-      } else if (bottom == "Kelvins") {
-        ans = answer + 273.15;
+    if (top == "Pascal") {
+      if (bottom == "PSI") {
+        ans = answer / 6895.0;
+      } else if (bottom == "Bar") {
+        ans = answer / 100000.0;
       }
-       else {
+      else {
         ans = answer.toDouble();
       }
-    } else if (top == "Fahrenheit") {
-      if (bottom == "Celsius") {
-        ans = (answer - 32.0) / 1.80;
-      } else if (bottom == "Kelvins") {
-        ans = (answer + 459.67) * 5 / 9;
+    } else if (top == "PSI") {
+      if (bottom == "Bar") {
+        ans = answer  / 14.504;
+      } else if (bottom == "Pascal") {
+        ans = answer * 6895.0;
       }
       else {
         ans = answer.toDouble();
       }
     }
     else {
-      if (bottom == "Celsius") {
-        ans = answer - 273.15;
-      } else if (bottom == "Fahrenheit") {
-        ans = 1.8 * (answer - 273) + 32;
+      if (bottom == "Pascal") {
+        ans = answer * 100000.0;
+      } else if (bottom == "PSI") {
+        ans = answer * 14.504;
       }
-     else {
+      else {
         ans = answer.toDouble();
       }
     }

@@ -1,4 +1,4 @@
-import 'package:calculator/SimpleCalculator.dart';
+import 'package:calculator/Calculator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -8,6 +8,7 @@ import 'WeightConverter.dart';
 import 'DistanceConverter.dart';
 import 'VolumeConverter.dart';
 import 'package:http/http.dart' as http;
+import 'PressureConverter.dart';
 
 class CurrConvert extends StatefulWidget {
   @override
@@ -280,6 +281,18 @@ class _CurrConvert extends State<CurrConvert> {
                 page = "Temperature Conversion";
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TemperatureConvert()));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Pressure Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Pressure Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => pressureConvert()));
               },
             ),
           )

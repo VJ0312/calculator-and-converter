@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:calculator/SimpleCalculator.dart';
+import 'package:calculator/Calculator.dart';
 import 'DistanceConverter.dart';
 import 'CurrencyConverter.dart';
 import 'package:calculator/VolumeConverter.dart';
 import 'TemperatureConverter.dart';
+import 'PressureConverter.dart';
 
 TextEditingController textC = TextEditingController();
 
@@ -185,6 +186,18 @@ class _WeightConvert extends State<WeightConvert> {
                 page = "Temperature Conversion";
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => TemperatureConvert()));
+              },
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: ListTile(
+              title:
+              Text('Pressure Conversion', style: TextStyle(fontSize: 25)),
+              onTap: () {
+                page = "Pressure Conversion";
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => pressureConvert()));
               },
             ),
           )
